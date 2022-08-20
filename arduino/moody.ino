@@ -3,7 +3,6 @@
 #include <avr/pgmspace.h>
 
 #include "facesConfig.h"
-#include "faces.h"
 
 #define DEFAULT_FACE_DELAY 1000
 

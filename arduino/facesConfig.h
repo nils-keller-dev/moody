@@ -1,21 +1,4 @@
-#define NUMBER_FACES 16
-#define INVALID_FACE -1
-#define AHEGAO 0
-#define COLD 1
-#define CONFUSED 2
-#define DEAD 3
-#define FROWN 4
-#define GLAD 5
-#define GRIN 6
-#define HAPPY 7
-#define HOT 8
-#define OWO 9
-#define POLITE 10
-#define SHOCK 11
-#define SPEECHLESS 12
-#define SURPRISED 13
-#define UNSURE 14
-#define UWU 15
+#include "faces.h"
 
 const int8_t nextFaces[][3] = {
   {UNSURE, INVALID_FACE, INVALID_FACE}, // AHEGAO
