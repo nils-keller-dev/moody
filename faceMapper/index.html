@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <canvas id="myCanvasId" style="display:none;"></canvas>
+        <input type="file" id="fileInput" onchange="onChangeFileInput(this)" webkitdirectory directory multiple/>
+        <div id="faceContainer"></div>
+
+        <script>
+            let faceGroups;
+            const onChangeFileInput = (fileInput) => {
+                if (fileInput.files.length) {
+                    createFaceGroups(fileInput.files);
+                    Object.keys(faceGroups).forEach(faceKey => {
+                        console.log(faceKey)
+                        addFace(faceGroups[faceKey]);
+                    });
+                }
+            }
+
+            const createFaceGroups = (files) => {
+                console.log(files);
+                faceGroups = {};
+                Array.from(files).forEach(file => {
+                    const faceName = file.webkitRelativePath.split("/")[1];
+                    if (!faceGroups[faceName]) faceGroups[faceName] = []; 
+                    faceGroups[faceName] = [ ...faceGroups[faceName], `../${file.webkitRelativePath}` ];
+                });
+                console.log(faceGroups);
+            }
+
+            const addFace = (face) => {
+                const image = document.createElement('img');
+                image.src = face[0];
+                image.draggable = "true";
+                document.getElementById("faceContainer").appendChild(image);
+            }
+        </script>
+    </body>
+</html>
