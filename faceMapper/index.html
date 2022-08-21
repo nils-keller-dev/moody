@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="js/go.js"></script>
+        <script src="js/moody.js"></script>
+        <script src="js/canvas.js"></script>
     </head>
     <body>
-        <canvas id="myCanvasId" style="display:none;"></canvas>
-        <input type="file" id="fileInput" onchange="onChangeFileInput(this)" webkitdirectory directory multiple/>
-        <div id="faceContainer"></div>
+        <div style="display: grid; grid-template-columns: 50% 50%">
+            <input
+                id="fileInput"
+                style="display: none"
+                type="file"
+                onchange="onChangeFileInput(this)"
+                webkitdirectory
+                directory
+                multiple
+            />
+            <button onclick="document.getElementById('fileInput').click();">
+                Import face images
+            </button>
+            <button onclick="onClickExport()">Export Raw Data</button>
 
-        <script>
-            let faceGroups;
-            const onChangeFileInput = (fileInput) => {
-                if (fileInput.files.length) {
-                    createFaceGroups(fileInput.files);
-                    Object.keys(faceGroups).forEach(faceKey => {
-                        console.log(faceKey)
-                        addFace(faceGroups[faceKey]);
-                    });
-                }
-            }
-
-            const createFaceGroups = (files) => {
-                console.log(files);
-                faceGroups = {};
-                Array.from(files).forEach(file => {
-                    const faceName = file.webkitRelativePath.split("/")[1];
-                    if (!faceGroups[faceName]) faceGroups[faceName] = []; 
-                    faceGroups[faceName] = [ ...faceGroups[faceName], `../${file.webkitRelativePath}` ];
-                });
-                console.log(faceGroups);
-            }
-
-            const addFace = (face) => {
-                const image = document.createElement('img');
-                image.src = face[0];
-                image.draggable = "true";
-                document.getElementById("faceContainer").appendChild(image);
-            }
-        </script>
+            <input
+                id="import"
+                style="display: none"
+                type="file"
+                onchange="onChangeImport(this)"
+                accept="application/json"
+            />
+            <button onclick="document.getElementById('import').click();">
+                Import Raw Data
+            </button>
+            <button onclick="onClickSave()">Save as 'facesConfig.h'</button>
+        </div>
+        <div
+            id="facesDiv"
+            style="border: solid 1px black; width: 100%; height: 800px"
+        />
     </body>
 </html>
