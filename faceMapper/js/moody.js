@@ -48,8 +48,7 @@ const generateConfigFile = () => {
     const maxLinks = getMaxLinks(mappings)
     const fileMappings = generateFileMappings(mappings, maxLinks)
 
-    return `
-#define NUMBER_FACES ${facesArray.length}
+    return `#define NUMBER_FACES ${facesArray.length}
 #define INVALID_FACE -1
 ${generateDefines()}
 const int8_t nextFaces[][${maxLinks}] = {

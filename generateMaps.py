@@ -3,22 +3,18 @@ import os
 from textwrap import wrap
 
 maindir = os.getcwd()
-imagesdir = r"{}\{}".format(maindir, "images")
+imagesdir = os.path.join(maindir, "images")
 
 directory = os.fsencode(imagesdir)
 
-defines = "#define NUMBER_FACES {}\n".format(len(next(os.walk(directory))[1]))
+array = "static const byte allFaces[][2][64] PROGMEM = {\n"
 
-defines += "#define INVALID_FACE -1\n"
-array = "\nstatic const byte allFaces[][2][64] PROGMEM = {\n"
-
-for index, folder in enumerate(os.listdir(directory)):
+for index, folder in enumerate(sorted(os.listdir(directory))):
     foldername = folder.decode("utf-8")
-    fullfolder = r"{}\{}".format(imagesdir, foldername)
-    defines += "#define {} {}\n".format(foldername.upper(), index)
+    fullfolder = os.path.join(imagesdir, foldername)
     faces = ""
-    for file in os.listdir(fullfolder):
-        im = Image.open(r"{}\{}".format(fullfolder, file))
+    for file in sorted(os.listdir(fullfolder)):
+        im = Image.open(os.path.join(fullfolder, file))
         px = im.load()
 
         data = ""
@@ -39,8 +35,8 @@ for index, folder in enumerate(os.listdir(directory)):
 
 array = array[:len(array) - 2] + "\n};\n"
 
-f = open(r"{}\{}".format(maindir, "arduino/faces.h"), "w")
-f.write(defines + array)
+f = open(os.path.join(maindir, "arduino/moody/faces.h"), "w")
+f.write(array)
 f.close()
 
 print("done")

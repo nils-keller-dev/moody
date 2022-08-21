@@ -2,6 +2,7 @@
 #include <Adafruit_SSD1306.h>
 #include <avr/pgmspace.h>
 
+#include "faces.h"
 #include "facesConfig.h"
 
 #define DEFAULT_FACE_DELAY 1000
