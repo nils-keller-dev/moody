@@ -1,0 +1,26 @@
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border: none;
+    background-color: #4287f5;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#facesDiv {
+    border: solid 1px black;
+    width: 100%;
+    height: 100%;
+}

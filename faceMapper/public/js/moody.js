@@ -1,6 +1,6 @@
 let facesArray
 
-const onChangeFileInput = (fileInput) => {
+const onChangeImageUpload = (fileInput) => {
     if (fileInput.files.length) {
         createFaceGroups(fileInput.files)
         displayNodes()
@@ -41,7 +41,8 @@ const displayNodes = () => {
     faces.model = new go.GraphLinksModel(faceNodes, [])
 }
 
-const onClickSave = () => {
+const onClickExport = () => {
+    if (!facesArray) return
     download('facesConfig.h', generateConfigFile())
 }
 
@@ -130,7 +131,7 @@ const download = (filename, text) => {
     document.body.removeChild(element)
 }
 
-const onClickExport = () => {
+const onClickSave = () => {
     const data = JSON.parse(faces.model.toJson())
     const nodeDataArray = data.nodeDataArray.map(({ source, ...item }) => item)
     data.nodeDataArray = nodeDataArray
@@ -141,11 +142,13 @@ const onClickExport = () => {
 const onChangeImport = (importInput) => {
     if (!facesArray) {
         window.alert('Please upload images first')
+        importInput.value = ''
         return false
     }
 
     const files = importInput.files
     if (files.length <= 0) {
+        importInput.value = ''
         return false
     }
 
