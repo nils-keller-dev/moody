@@ -126,8 +126,9 @@ const download = (filename, text) => {
 }
 
 const onClickExport = () => {
-    let data = JSON.parse(faces.model.toJson())
-    data = data.nodeDataArray.map(({ source, ...item }) => item)
+    const data = JSON.parse(faces.model.toJson())
+    const nodeDataArray = data.nodeDataArray.map(({ source, ...item }) => item)
+    data.nodeDataArray = nodeDataArray
 
     download('facesConfig.json', JSON.stringify(data))
 }

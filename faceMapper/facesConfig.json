@@ -1,0 +1,131 @@
+{
+    "class": "GraphLinksModel",
+    "nodeDataArray": [
+        {
+            "key": 0,
+            "text": "0 - ahegao",
+            "name": "ahegao",
+            "loc": "75 284.16900634765625"
+        },
+        {
+            "key": 1,
+            "text": "1 - cold",
+            "name": "cold",
+            "loc": "75 -100"
+        },
+        {
+            "key": 2,
+            "text": "2 - confused",
+            "name": "confused",
+            "loc": "0 0"
+        },
+        {
+            "key": 3,
+            "text": "3 - dead",
+            "name": "dead",
+            "loc": "75 0"
+        },
+        {
+            "key": 4,
+            "text": "4 - frown",
+            "name": "frown",
+            "loc": "150 0"
+        },
+        { "key": 5, "text": "5 - glad", "name": "glad", "loc": "75 75" },
+        {
+            "key": 6,
+            "text": "6 - grin",
+            "name": "grin",
+            "loc": "0 75"
+        },
+        {
+            "key": 7,
+            "text": "7 - happy",
+            "name": "happy",
+            "loc": "150 75"
+        },
+        {
+            "key": 8,
+            "text": "8 - hot",
+            "name": "hot",
+            "loc": "0 -100"
+        },
+        {
+            "key": 9,
+            "text": "9 - owo",
+            "name": "owo",
+            "loc": "0 150"
+        },
+        {
+            "key": 10,
+            "text": "10 - polite",
+            "name": "polite",
+            "loc": "75 150"
+        },
+        {
+            "key": 11,
+            "text": "11 - shock",
+            "name": "shock",
+            "loc": "150 -100"
+        },
+        {
+            "key": 12,
+            "text": "12 - speechless",
+            "name": "speechless",
+            "loc": "150 150"
+        },
+        {
+            "key": 13,
+            "text": "13 - surprised",
+            "name": "surprised",
+            "loc": "0 225"
+        },
+        {
+            "key": 14,
+            "text": "14 - unsure",
+            "name": "unsure",
+            "loc": "75 225"
+        },
+        {
+            "key": 15,
+            "text": "15 - uwu",
+            "name": "uwu",
+            "loc": "150 225"
+        }
+    ],
+    "linkDataArray": [
+        { "from": 8, "to": 13 },
+        { "from": 1, "to": 14 },
+        { "from": 1, "to": 0 },
+        { "from": 11, "to": 3 },
+        { "from": 11, "to": 0 },
+        { "from": 2, "to": 9 },
+        { "from": 2, "to": 12 },
+        { "from": 3, "to": 4 },
+        { "from": 4, "to": 12 },
+        { "from": 6, "to": 7 },
+        { "from": 6, "to": 12 },
+        { "from": 6, "to": 10 },
+        { "from": 5, "to": 7 },
+        { "from": 5, "to": 15 },
+        { "from": 5, "to": 9 },
+        { "from": 7, "to": 5 },
+        { "from": 7, "to": 6 },
+        { "from": 7, "to": 13 },
+        { "from": 9, "to": 2 },
+        { "from": 9, "to": 5 },
+        { "from": 9, "to": 15 },
+        { "from": 10, "to": 6 },
+        { "from": 10, "to": 14 },
+        { "from": 12, "to": 4 },
+        { "from": 12, "to": 2 },
+        { "from": 12, "to": 6 },
+        { "from": 13, "to": 7 },
+        { "from": 14, "to": 10 },
+        { "from": 14, "to": 0 },
+        { "from": 15, "to": 5 },
+        { "from": 15, "to": 9 },
+        { "from": 0, "to": 14 },
+        { "from": 4, "to": 3 }
+    ]
+}

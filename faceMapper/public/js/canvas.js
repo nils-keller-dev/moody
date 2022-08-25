@@ -32,7 +32,10 @@ function init() {
                 'ToolTip',
                 $(go.TextBlock, new go.Binding('text', 'text'))
             ),
-        }
+        },
+        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(
+            go.Point.stringify
+        )
     )
 
     faces.linkTemplate = $(
