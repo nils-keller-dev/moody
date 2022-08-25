@@ -73,6 +73,11 @@ const getMaxLinks = (mappings) => {
     return max
 }
 
+const addMapping = (map, key, mapping) => {
+    if (!map[key]) map[key] = []
+    map[key].push(mapping.name.toUpperCase())
+}
+
 const generateMappings = () => {
     const mappings = {}
 
@@ -80,11 +85,11 @@ const generateMappings = () => {
         const iterator = node.findLinksOutOf()
         while (iterator.next()) {
             const item = iterator.value
-            if (!mappings[node.qb.key]) mappings[node.qb.key] = []
+            addMapping(mappings, item.data.from, facesArray[item.data.to])
 
-            mappings[node.qb.key].push(
-                facesArray[item.qb.to].name.toUpperCase()
-            )
+            if (item.data.isBiDirectional) {
+                addMapping(mappings, item.data.to, facesArray[item.data.from])
+            }
         }
     })
 

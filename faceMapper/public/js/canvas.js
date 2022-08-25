@@ -17,10 +17,8 @@ function init() {
             cursor: 'pointer',
             fromLinkable: true,
             fromLinkableSelfNode: true,
-            fromLinkableDuplicates: true,
             toLinkable: true,
             toLinkableSelfNode: true,
-            toLinkableDuplicates: true,
         }),
         $(
             go.Picture,
@@ -55,7 +53,12 @@ function init() {
             strokeWidth: 8,
         }),
         $(go.Shape, { isPanelMain: true }),
-        $(go.Shape, { toArrow: 'Standard' }),
+        $(go.Shape, { toArrow: 'Triangle' }),
+        $(
+            go.Shape,
+            { fromArrow: 'BackwardTriangle' },
+            new go.Binding('visible', 'isBiDirectional')
+        ),
         {
             mouseEnter: function (e, link) {
                 link.elt(0).stroke = 'rgba(0,90,156,0.3)'
@@ -65,5 +68,18 @@ function init() {
             },
         }
     )
+
+    faces.addDiagramListener('LinkDrawn', (e) => {
+        faces.model.setDataProperty(e.subject.data, 'isBiDirectional', false)
+
+        const iterator = e.subject.toNode.findLinksOutOf()
+        while (iterator.next()) {
+            const item = iterator.value
+            if (item.data.to === e.subject.data.from) {
+                faces.remove(e.subject)
+                faces.model.setDataProperty(item.data, 'isBiDirectional', true)
+            }
+        }
+    })
 }
 window.addEventListener('DOMContentLoaded', init)
