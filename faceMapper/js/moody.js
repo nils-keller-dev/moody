@@ -33,6 +33,7 @@ const displayNodes = () => {
             key: index,
             source: face.images[0],
             text: `${index} - ${face.name}`,
+            name: face.name,
         }
     })
 
