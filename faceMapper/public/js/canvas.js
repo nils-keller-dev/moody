@@ -6,6 +6,8 @@ function init() {
         'undoManager.isEnabled': true,
     })
 
+    faces.toolManager.draggingTool.isGridSnapEnabled = true
+
     faces.nodeTemplate = $(
         go.Node,
         'Auto',
@@ -23,7 +25,9 @@ function init() {
         $(
             go.Picture,
             {
-                margin: 2,
+                margin: 10,
+                width: 80,
+                height: 40,
             },
             new go.Binding('source', 'source')
         ),
@@ -44,8 +48,6 @@ function init() {
             toShortLength: 3,
             relinkableFrom: true,
             relinkableTo: true,
-            routing: go.Link.AvoidsNodes,
-            corner: 10,
         },
         $(go.Shape, {
             isPanelMain: true,
