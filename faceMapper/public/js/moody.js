@@ -5,17 +5,18 @@ const onChangeFileInput = (fileInput) => {
         createFaceGroups(fileInput.files)
         displayNodes()
     }
+    fileInput.value = ''
 }
 
 const createFaceGroups = (files) => {
     const faceGroups = {}
 
-    Array.from(files).forEach((file) => {
+    Array.from(files).forEach((file, index) => {
         const faceName = file.webkitRelativePath.split('/')[1]
         if (!faceGroups[faceName]) faceGroups[faceName] = []
         faceGroups[faceName] = [
             ...faceGroups[faceName],
-            `../${file.webkitRelativePath}`,
+            URL.createObjectURL(fileInput.files[index]),
         ]
     })
 
@@ -129,6 +130,11 @@ const onClickExport = () => {
 }
 
 const onChangeImport = (importInput) => {
+    if (!facesArray) {
+        window.alert('Please upload images first')
+        return false
+    }
+
     const files = importInput.files
     if (files.length <= 0) {
         return false
@@ -137,7 +143,24 @@ const onChangeImport = (importInput) => {
     const fr = new FileReader()
 
     fr.onload = (e) => {
-        faces.model = go.Model.fromJson(e.target.result)
+        const rawData = JSON.parse(e.target.result)
+        const facesArrayObject = facesArray.reduce((previous, current) => {
+            previous[current.name] = current.images
+            return previous
+        }, {})
+
+        Object.entries(rawData.nodeDataArray).forEach((entry) => {
+            const [key, node] = entry
+            if (facesArrayObject[node.name]) {
+                node.source = facesArrayObject[node.name][0]
+            } else {
+                delete rawData.nodeDataArray[key]
+                rawData.nodeDataArray.length--
+            }
+        })
+
+        faces.model = go.Model.fromJson(JSON.stringify(rawData))
+        importInput.value = ''
     }
 
     fr.readAsText(files.item(0))
