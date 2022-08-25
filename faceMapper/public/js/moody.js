@@ -126,7 +126,10 @@ const download = (filename, text) => {
 }
 
 const onClickExport = () => {
-    download('facesConfig.json', faces.model.toJson())
+    let data = JSON.parse(faces.model.toJson())
+    data = data.nodeDataArray.map(({ source, ...item }) => item)
+
+    download('facesConfig.json', JSON.stringify(data))
 }
 
 const onChangeImport = (importInput) => {
