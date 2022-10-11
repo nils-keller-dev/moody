@@ -5,8 +5,8 @@
 #include "faces.h"
 #include "facesConfig.h"
 
-#define DEFAULT_FACE_DELAY 16
-#define SHOCK_FACE_DELAY 3
+#define DEFAULT_FACE_DELAY 20
+#define SHOCK_FACE_DELAY 4
 #define TEMP_HOT_THRESHOLD 27
 #define TEMP_COLD_THRESHOLD 8
 #define MAX_SHOCK_DURATION 6
@@ -82,7 +82,7 @@ void setFaceDelay(uint8_t delay) {
 }
 
 void resetNumberRepeats() {
-  numberRepeats = random(3, 10);
+  numberRepeats = random(6, 18);
 }
 
 void selectStartingFace() {
