@@ -5,9 +5,11 @@
 #include "faces.h"
 #include "facesConfig.h"
 
-#define DEFAULT_FACE_DELAY 10
+#define DEFAULT_FACE_DELAY 16
+#define SHOCK_FACE_DELAY 3
 #define TEMP_HOT_THRESHOLD 27
 #define TEMP_COLD_THRESHOLD 8
+#define MAX_SHOCK_DURATION 6
 
 #define SHOCK_PIN 13
 
@@ -16,12 +18,11 @@ Adafruit_SSD1306 display(128, 64, &Wire, -1);
 
 uint8_t currentFace;
 int8_t numberRepeats;
-uint16_t faceTimer = DEFAULT_FACE_DELAY;
+uint8_t faceDelay = DEFAULT_FACE_DELAY;
+uint8_t faceTimer = faceDelay;
 
 bool shockSensorSate = 0;
 float temp;
-
-void loopFace(uint8_t face, uint16_t faceDelay = DEFAULT_FACE_DELAY);
 
 void setup() {
   pinMode(SHOCK_PIN, INPUT);
@@ -37,34 +38,47 @@ void setup() {
 }
 
 void loop() {
-  shockSensorSate = digitalRead(SHOCK_PIN);
-  Serial.println(shockSensorSate);
-  
-  loopFace(currentFace);
-
   if (faceTimer <= 0) {
     numberRepeats--;
-    faceTimer = DEFAULT_FACE_DELAY;
+    faceTimer = faceDelay;
   }
   
   if (numberRepeats <= 0) {
-    resetNumberRepeats();
-    selectNextFace();
+    setFaceDelay(DEFAULT_FACE_DELAY);
+    
+    temp = sht.GY21_Temperature();
+    //Serial.println(temp);
+    float constrainedTemp = constrain(temp, TEMP_COLD_THRESHOLD, TEMP_HOT_THRESHOLD);
+
+    if (constrainedTemp != temp) {
+      numberRepeats = 2;
+      currentFace = constrainedTemp == TEMP_COLD_THRESHOLD ? COLD : HOT;
+    } else {
+      resetNumberRepeats();
+      selectNextFace();
+    }
   }
 
-  temp = sht.GY21_Temperature();
-  //Serial.println(temp);
-  if (temp > TEMP_HOT_THRESHOLD) {
-    currentFace = HOT;
-  } else if (currentFace == HOT) {
-    numberRepeats = 0;
+  shockSensorSate = digitalRead(SHOCK_PIN);
+  //Serial.println(shockSensorSate);
+  if (shockSensorSate) {
+    if (currentFace != SHOCK) {
+      currentFace = SHOCK;
+      numberRepeats = 2;
+      setFaceDelay(SHOCK_FACE_DELAY);
+    }
+
+    if (numberRepeats < MAX_SHOCK_DURATION - 1) {
+      numberRepeats = min(numberRepeats + 2, MAX_SHOCK_DURATION);
+    }
   }
 
-  if (temp < TEMP_COLD_THRESHOLD) {
-    currentFace = COLD;
-  } else if (currentFace == COLD) {
-    numberRepeats = 0;
-  }
+  loopFace(currentFace);
+}
+
+void setFaceDelay(uint8_t delay) {
+  faceDelay = delay;
+  faceTimer = faceDelay;
 }
 
 void resetNumberRepeats() {
@@ -85,7 +99,7 @@ void selectNextFace() {
   currentFace = nextFace;
 }
 
-void loopFace(uint8_t face, uint16_t faceDelay = DEFAULT_FACE_DELAY) {
+void loopFace(uint8_t face) {
   faceTimer--;
   drawFace(allFaces[face][numberRepeats % 2]);
 }
