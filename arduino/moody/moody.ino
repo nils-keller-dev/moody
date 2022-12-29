@@ -2,14 +2,17 @@
 #include <Adafruit_SSD1306.h>
 #include <avr/pgmspace.h>
 
-#include "faces.h"
-#include "facesConfig.h"
+#include "faces.h" //Generated file containing data of face images
+#include "facesConfig.h" //Generated file containing configuration data for the connections of faces
 
 #define DEFAULT_FACE_DELAY (F_CPU / 300) //Delay between frames of animation, calculated to show about 100 faces in 60 seconds
-#define SHOCK_FACE_DELAY (F_CPU / 1400) //Delay between frames of animation for shocked face, faster than default
-#define TEMP_HOT_THRESHOLD 27
-#define TEMP_COLD_THRESHOLD 8
-#define MIN_SHOCK_DURATION 6
+#define SHOCK_FACE_DELAY (F_CPU / 1400) //Delay between frames of animation for the "shock" face, faster than the default delay
+#define MIN_FACE_DURATION 100 //Minimum duration a face will be shown, equals about 1 minute
+#define MAX_FACE_DURATION 200 //Maximum duration a face will be shown, equals about 2 minute
+#define MIN_SHOCK_DURATION 6 //Minimum duration the "shock" face will be shown
+
+#define TEMP_HOT_THRESHOLD 27 //Temperature in C above which the "hot" face should appear
+#define TEMP_COLD_THRESHOLD 8 //Temperature in C below which the "cold" face should appear
 
 #define SHOCK_PIN 6
 
@@ -82,8 +85,7 @@ void setFaceDelay(uint32_t delay) {
 }
 
 void resetNumberRepeats() {
-  // 100 ≙ 1 min
-  numberRepeats = random(100, 200);
+  numberRepeats = random(MIN_FACE_DURATION, MAX_FACE_DURATION);
 }
 
 void selectStartingFace() {
