@@ -32,10 +32,7 @@ void setup() {
   pinMode(SHOCK_PIN, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
-  Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  display.clearDisplay();
-  display.display();
   randomSeed(analogRead(0));
   resetNumberRepeats();
   selectStartingFace();
