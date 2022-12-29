@@ -5,8 +5,8 @@
 #include "faces.h"
 #include "facesConfig.h"
 
-#define DEFAULT_FACE_DELAY (F_CPU / 3000) //Delay between frames of animation, calculated to show about 100 faces in 60 seconds
-#define SHOCK_FACE_DELAY (F_CPU / 14000) //Delay between frames of animation for shocked face, faster than default
+#define DEFAULT_FACE_DELAY (F_CPU / 300) //Delay between frames of animation, calculated to show about 100 faces in 60 seconds
+#define SHOCK_FACE_DELAY (F_CPU / 1400) //Delay between frames of animation for shocked face, faster than default
 #define TEMP_HOT_THRESHOLD 27
 #define TEMP_COLD_THRESHOLD 8
 #define MIN_SHOCK_DURATION 6
@@ -19,14 +19,16 @@ Adafruit_SSD1306 display(128, 64, &Wire, -1);
 uint8_t currentFace;
 uint8_t numberRepeats;
 int8_t currentlyDrawnFaceFrame;
-uint16_t faceDelay = DEFAULT_FACE_DELAY;
-uint16_t faceTimer = faceDelay;
+uint32_t faceDelay = DEFAULT_FACE_DELAY;
+uint32_t faceTimer = faceDelay;
 
-bool shockSensorSate = 0;
+bool shockSensorState = 0;
 float temp;
 
 void setup() {
   pinMode(SHOCK_PIN, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
@@ -59,9 +61,9 @@ void loop() {
     }
   }
 
-  shockSensorSate = digitalRead(SHOCK_PIN);
+  shockSensorState = digitalRead(SHOCK_PIN);
 
-  if (shockSensorSate) {
+  if (shockSensorState) {
     if (currentFace != SHOCK) {
       currentFace = SHOCK;
       numberRepeats = 2;
@@ -76,14 +78,15 @@ void loop() {
   loopFace(currentFace);
 }
 
-void setFaceDelay(uint16_t delay) {
+void setFaceDelay(uint32_t delay) {
   faceDelay = delay;
   faceTimer = faceDelay;
 }
 
 void resetNumberRepeats() {
   // 100 ≙ 1 min
-  numberRepeats = random(100, 200);
+  //numberRepeats = random(100, 200);
+  numberRepeats = 100;
 }
 
 void selectStartingFace() {
