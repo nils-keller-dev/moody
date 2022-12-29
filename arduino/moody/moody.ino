@@ -5,21 +5,22 @@
 #include "faces.h"
 #include "facesConfig.h"
 
-#define DEFAULT_FACE_DELAY 20
-#define SHOCK_FACE_DELAY 4
+#define DEFAULT_FACE_DELAY (F_CPU / 3000) //Delay between frames of animation, calculated to show about 100 faces in 60 seconds
+#define SHOCK_FACE_DELAY (F_CPU / 14000) //Delay between frames of animation for shocked face, faster than default
 #define TEMP_HOT_THRESHOLD 27
 #define TEMP_COLD_THRESHOLD 8
-#define MAX_SHOCK_DURATION 6
+#define MIN_SHOCK_DURATION 6
 
-#define SHOCK_PIN 13
+#define SHOCK_PIN 6
 
 GY21 sht;
 Adafruit_SSD1306 display(128, 64, &Wire, -1); 
 
 uint8_t currentFace;
-int8_t numberRepeats;
-uint8_t faceDelay = DEFAULT_FACE_DELAY;
-uint8_t faceTimer = faceDelay;
+uint8_t numberRepeats;
+int8_t currentlyDrawnFaceFrame;
+uint16_t faceDelay = DEFAULT_FACE_DELAY;
+uint16_t faceTimer = faceDelay;
 
 bool shockSensorSate = 0;
 float temp;
@@ -33,23 +34,22 @@ void setup() {
   randomSeed(analogRead(0));
   resetNumberRepeats();
   selectStartingFace();
-  Serial.begin(9600);
+  //Serial.begin(9600);
   //while (!Serial);
 }
 
 void loop() {
-  if (faceTimer <= 0) {
+  if (faceTimer == 0) {
     numberRepeats--;
     faceTimer = faceDelay;
   }
   
-  if (numberRepeats <= 0) {
+  if (numberRepeats == 0) {
     setFaceDelay(DEFAULT_FACE_DELAY);
     
     temp = sht.GY21_Temperature();
-    //Serial.println(temp);
     float constrainedTemp = constrain(temp, TEMP_COLD_THRESHOLD, TEMP_HOT_THRESHOLD);
-
+  
     if (constrainedTemp != temp) {
       numberRepeats = 2;
       currentFace = constrainedTemp == TEMP_COLD_THRESHOLD ? COLD : HOT;
@@ -60,7 +60,7 @@ void loop() {
   }
 
   shockSensorSate = digitalRead(SHOCK_PIN);
-  //Serial.println(shockSensorSate);
+
   if (shockSensorSate) {
     if (currentFace != SHOCK) {
       currentFace = SHOCK;
@@ -68,21 +68,22 @@ void loop() {
       setFaceDelay(SHOCK_FACE_DELAY);
     }
 
-    if (numberRepeats < MAX_SHOCK_DURATION - 1) {
-      numberRepeats = min(numberRepeats + 2, MAX_SHOCK_DURATION);
+    if (numberRepeats < MIN_SHOCK_DURATION - 1) {
+      numberRepeats = min(numberRepeats + 2, MIN_SHOCK_DURATION);
     }
   }
 
   loopFace(currentFace);
 }
 
-void setFaceDelay(uint8_t delay) {
+void setFaceDelay(uint16_t delay) {
   faceDelay = delay;
   faceTimer = faceDelay;
 }
 
 void resetNumberRepeats() {
-  numberRepeats = random(6, 18);
+  // 100 ≙ 1 min
+  numberRepeats = random(100, 200);
 }
 
 void selectStartingFace() {
@@ -97,11 +98,16 @@ void selectNextFace() {
   } while (nextFace == -1);
   
   currentFace = nextFace;
+  currentlyDrawnFaceFrame = -1;
 }
 
 void loopFace(uint8_t face) {
   faceTimer--;
-  drawFace(allFaces[face][numberRepeats % 2]);
+  uint8_t faceFrameToDraw = numberRepeats % 2;
+  if (currentlyDrawnFaceFrame != faceFrameToDraw) {
+    drawFace(allFaces[face][faceFrameToDraw]);
+    currentlyDrawnFaceFrame = faceFrameToDraw;
+  }
 }
 
 void drawFace(const uint8_t * bmp) {
