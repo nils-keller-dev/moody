@@ -36,8 +36,6 @@ void setup() {
   randomSeed(analogRead(0));
   resetNumberRepeats();
   selectStartingFace();
-  //Serial.begin(9600);
-  //while (!Serial);
 }
 
 void loop() {
@@ -85,8 +83,7 @@ void setFaceDelay(uint32_t delay) {
 
 void resetNumberRepeats() {
   // 100 ≙ 1 min
-  //numberRepeats = random(100, 200);
-  numberRepeats = 100;
+  numberRepeats = random(100, 200);
 }
 
 void selectStartingFace() {
