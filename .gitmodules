@@ -1,0 +1,9 @@
+[submodule "moody-arduino"]
+	path = moody-arduino
+	url = git@github.com:tsomic/moody-arduino.git
+[submodule "moody-mapper"]
+	path = moody-mapper
+	url = git@github.com:tsomic/moody-mapper.git
+[submodule "moody-images"]
+	path = moody-images
+	url = git@github.com:tsomic/moody-images.git
