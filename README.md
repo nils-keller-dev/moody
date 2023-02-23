@@ -21,7 +21,7 @@ If you are interested in creating your own individual Moody with custom facial e
 The Moody project consists of three main components, each of which is contained in a separate sub-repository:
 
 1.  [`moody-arduino`](https://github.com/tsomic/moody-arduino): This repository contains all the code for the Arduino microcontroller, ready to be uploaded to an Arduino.
-2.  [`moody-images`](https://github.com/tsomic/moody-images): This repository includes all the images of the facial expressions. It also contains a Python script that converts the images to binary data which is needed for the [`moody-arduino`](https://github.com/tsomic/moody-arduino) project.
+2.  [`moody-images`](https://github.com/tsomic/moody-images): This repository includes all the images of the facial expressions. It also contains a python script that converts the images to binary data which is needed for the [`moody-arduino`](https://github.com/tsomic/moody-arduino) project.
 3.  [`moody-mapper`](https://github.com/tsomic/moody-mapper): This repository is a web-based tool for mapping out the facial expressions and their order. You can export the results to be used in the [`moody-arduino`](https://github.com/tsomic/moody-arduino) project.
 
 <br/>
